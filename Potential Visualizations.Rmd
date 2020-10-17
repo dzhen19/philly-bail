@@ -1,0 +1,25 @@
+---
+title: "Philly Bail"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+all <- read.csv("~/Documents/philly-bail/parsed1.csv")
+
+```
+
+```{r}
+hist(as.Date(all$offense_date, format = "%d/%m/%y"), breaks = 'months')
+```
+
+```{r}
+hist(strtoi(all$bail_amount))
+```
+
+```{r}
+hist()
+```
+
+

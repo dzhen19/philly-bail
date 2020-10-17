@@ -37,8 +37,8 @@ t <- "1:36:22 PM"
 time_of_day = hour(parse_date_time(all$prelim_hearing_time, '%I:%M %p', tz = "America/New_York"))
 bail_amount = all$bail_amount
 plot(time_of_day, bail_amount, 
-     xlab = "Amount of Bail",
-     ylab = "Time of Day"
+     ylab = "Amount of Bail",
+     xlab = "Time of Day"
      )
 #hist(hour(date_time), breaks = 30)
 ```
@@ -53,6 +53,6 @@ x <- foo(as.Date(all$dob, format = "%m/%d/%y"), 1920)
 
 bail_in_thousands <- all$bail_amount / 1000
 plot(x, bail_in_thousands,
-     xlab = "Bail Amount in Thousands",
-     ylab = "Date of Birth")
+     xlab = "Date of Birth",
+     ylab = "Bail Amount in Thousands")
 ```

@@ -4,7 +4,9 @@ library(reticulate)
 library(markdown)
 library(leaflet)
 library(lubridate)
+library(data.table)
 
+parsed1 <- read_csv("parsed1.csv")
 map <- function() {
   zip <- read_csv("latitudeLongitudeBail(1).csv")
   m <- leaflet(data=zip) %>%
@@ -40,7 +42,8 @@ ui <- fluidPage(
     # Output: Tabset w/ plot, summary, and table ----
      tabsetPanel(type = "tabs",
                  tabPanel("Map", map()),#plotOutput("plot")),
-                 tabPanel("Summary", plotOutput("hist1"))
+                 tabPanel("Summary", plotOutput("hist1")),
+                 tabPanel("Table", tableOutput("table"))
     )
     #includeMarkdown("Diceware.rmd")
   )
@@ -51,12 +54,17 @@ server <- function(input, output) {
   x <- seq(5, 15, length=1000)
   y <- dnorm(x, mean=10, sd=3)
   #p <- plot(x, y)#, type="l", lwd=1)
-  data = read_csv("parsed1.csv")
+  data <- read_csv("parsed1.csv")
+  table <- as.data.table(read_csv("parsed1.csv"))
+  #seemingly no way to make data table in r shiny
   # output$normal <- renderPlot({
   #   plot(x, y)
   # })
   output$hist1 <- renderPlot({
     hist(as.Date(data$offense_date, format = "%d/%m/%y"), breaks = 'months')
+  })
+  output$table <- renderDataTable({
+    table
   })
   #plotOutput("normal")
 }

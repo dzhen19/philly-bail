@@ -4,6 +4,7 @@ from uszipcode import SearchEngine
 search = SearchEngine(simple_zipcode=True)
 lat = []
 lon = []
+complete = pandas.read_csv("parsed2.csv")
 data = pandas.read_csv("zipVsBailAmount.csv")
 zipcodes = data["zip"]
 print(zipcodes.values)
