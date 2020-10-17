@@ -20,34 +20,43 @@ map <- function() {
 hist1 <- function() {
   data = read_csv("parsed1.csv")
   p <- hist(as.Date(data$offense_date, format = "%d/%m/%y"), breaks = 'months')
-  
 }
 
 # Define UI for miles per gallon app ----
-ui <- fluidPage(
-  # App title ----
-  headerPanel("Philly Bail Stats"),
-  
-  # Sidebar panel for inputs ----
-  sidebarPanel(
-    checkboxGroupInput("dist", "Crime type:",
-                       c("Normal" = "norm",
-                         "Uniform" = "unif",
-                         "Log-normal" = "lnorm",
-                         "Exponential" = "exp"))
-  ),
-  
-  # Main panel for displaying outputs ----
-  mainPanel(
-    # Output: Tabset w/ plot, summary, and table ----
-     tabsetPanel(type = "tabs",
-                 tabPanel("Map", map()),#plotOutput("plot")),
-                 tabPanel("Summary", plotOutput("hist1")),
-                 tabPanel("Table", tableOutput("table"))
-    )
+ui <- navbarPage("Philly Bail Stats",
+          tabPanel("Map",
+                   # Sidebar panel for inputs ----
+            sidebarPanel(
+              checkboxGroupInput("dist", "Crime type:",
+                      c("Normal" = "norm",
+                          "Uniform" = "unif",
+                          "Log-normal" = "lnorm",
+                          "Exponential" = "exp"))
+                   ),
+            mainPanel("Map", map())),
+          tabPanel("Histograms",
+                   # Sidebar panel for inputs ----
+            sidebarPanel(
+                checkboxGroupInput("dist", "Crime type:",
+                      c("Normal" = "norm",
+                        "Uniform" = "unif",
+                        "Log-normal" = "lnorm",
+                        "Exponential" = "exp"))
+                ),
+            mainPanel("Summary", plotOutput("hist1"))),
+          tabPanel("Table",
+            # Sidebar panel for inputs ----
+            sidebarPanel(
+              checkboxGroupInput("dist", "Crime type:",
+                    c("Normal" = "norm",
+                      "Uniform" = "unif",
+                      "Log-normal" = "lnorm",
+                      "Exponential" = "exp"))
+              ),
+            mainPanel("Table", tableOutput("table")))
+      )
     #includeMarkdown("Diceware.rmd")
-  )
-)
+
 
 # Define server logic to plot various variables against mpg ----
 server <- function(input, output) {
@@ -61,7 +70,20 @@ server <- function(input, output) {
   #   plot(x, y)
   # })
   output$hist1 <- renderPlot({
-    hist(as.Date(data$offense_date, format = "%d/%m/%y"), breaks = 'months')
+    my_data <- as_tibble(data)
+    my_data$offense_date <- as.Date(data$offense_date, format = "%m/%d/%y")
+    x <- my_data %>% filter(offense_date > '2015-01-01')
+    hist(x$offense_date, breaks = 'months',
+         xlab = "Offense Date",
+         ylab = "Density")
+  })
+  output$hist2 <- renderPlot({
+    my_data <- as_tibble(data)
+    y <- my_data %>% filter(bail_amount < 100000)
+    hist(y$bail_amount, breaks = "fd", 
+         main = "Histogram of Bail Amount",
+         xlab = "Bail Amount",
+         ylab = "Frequency")
   })
   output$table <- renderDataTable({
     table
