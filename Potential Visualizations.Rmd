@@ -11,15 +11,36 @@ all <- read.csv("~/Documents/philly-bail/parsed1.csv")
 ```
 
 ```{r}
-hist(as.Date(all$offense_date, format = "%d/%m/%y"), breaks = 'months')
+#This is a histogram for the distribution of Offense Date from 2015-Now
+library(tidyverse)
+my_data <- as_tibble(all)
+my_data$offense_date <- as.Date(all$offense_date, format = "%m/%d/%y")
+x <- my_data %>% filter(offense_date > '2015-01-01')
+hist(x$offense_date, breaks = 'months',
+     xlab = "Offense Date",
+     ylab = "Density")
 ```
 
 ```{r}
-hist(strtoi(all$bail_amount))
+library(tidyverse)
+my_data <- as_tibble(all)
+y <- my_data %>% filter(bail_amount < 100000)
+hist(y$bail_amount, breaks = "fd", 
+     main = "Histogram of Bail Amount",
+     xlab = "Bail Amount",
+     ylab = "Frequency")
 ```
 
 ```{r}
-hist()
+library(lubridate)
+t <- "1:36:22 PM"
+time_of_day = hour(parse_date_time(all$prelim_hearing_time, '%I:%M %p', tz = "America/New_York"))
+bail_amount = all$bail_amount
+plot(time_of_day, bail_amount, 
+     xlab = "Amount of Bail",
+     ylab = "Time of Day"
+     )
+#hist(hour(date_time), breaks = 30)
 ```
 
 
