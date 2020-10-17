@@ -3,13 +3,16 @@ library(shiny)
 library(reticulate)
 library(markdown)
 library(leaflet)
+library(lubridate)
 
 map <- function() {
-  zip <- read_csv("zipVsBailAmount.csv")
-  m <- leaflet() %>%
+  zip <- read_csv("latitudeLongitudeBail(1).csv")
+  m <- leaflet(data=zip) %>%
     addTiles() %>% 
     setView(lng = -75.1624776, lat = 39.9562897, zoom = 13) %>%
-    addCircleMarkers(lat= 39.9562897, lng= -75.1624776, popup = "Philadelphia, PA")
+    addCircleMarkers(radius = 5)
+    #addCircleMarkers(lat= 39.9562897, lng= -75.1624776, popup = "Philadelphia, PA")
+  
   m  # Print the map
 }
 hist1 <- function() {
