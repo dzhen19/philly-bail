@@ -37,9 +37,8 @@ ui <- fluidPage(
     # Output: Tabset w/ plot, summary, and table ----
      tabsetPanel(type = "tabs",
                  tabPanel("Map", map()),#plotOutput("plot")),
-                 tabPanel("Summary", plotOutput("hist1")),
-                 tabPanel("Table", tableOutput("table"))
-     )
+                 tabPanel("Summary", plotOutput("hist1"))
+    )
     #includeMarkdown("Diceware.rmd")
   )
 )
