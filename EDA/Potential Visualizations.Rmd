@@ -6,7 +6,7 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-all <- read.csv("~/Documents/philly-bail/parsed1.csv")
+all <- read.csv("../parsed1.csv")
 
 ```
 
