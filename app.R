@@ -79,7 +79,9 @@ ui <- navbarPage("Philly Bail Stats",
                       "Log-normal" = "lnorm",
                       "Exponential" = "exp"))
               ),
-            mainPanel("Table", tableOutput("table"))
+            mainPanel("Correlation Coeffieients", 
+                      img(src="corr.png", width=500, height=500), 
+                      img(src="heatmap.png", width=500, height=500))
           )
       )
     #includeMarkdown("Diceware.rmd")
