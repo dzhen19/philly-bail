@@ -80,8 +80,10 @@ ui <- navbarPage("Philly Bail Stats",
                       "Exponential" = "exp"))
               ),
             mainPanel("Correlation Coeffieients", 
-                      img(src="corr.png", width=500, height=500), 
-                      img(src="heatmap.png", width=500, height=500))
+                      includeHTML("do.html")
+                      #img(src="corr.png", width=500, height=500), 
+                      #HTML('<img src="/heatmap.png" width="500" height="500">')
+            )
           )
       )
     #includeMarkdown("Diceware.rmd")
@@ -146,6 +148,9 @@ server <- function(input, output) {
   # output$test <- renderText({
   #   nearPoints(my_data, input$plot_click, xvar = "dob", yvar = "bail_amount")
   # })
+  output$heatmap <- renderImage({
+    img("heatmap.png")
+  })
   output$table <- renderDataTable({
     table
   })

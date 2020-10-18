@@ -56,3 +56,9 @@ plot(x, bail_in_thousands,
      xlab = "Date of Birth",
      ylab = "Bail Amount in Thousands")
 ```
+
+```{r}
+data2 <- read_csv("../parsed2.csv")
+data2 <- subset(data2, select=c(bail_amount, bail_paid, felonies, misdemeanors, summaries))
+write_csv(data2, "parsed3.csv")
+```

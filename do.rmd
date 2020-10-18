@@ -1,0 +1,27 @@
+---
+title: "Corrrelation Coefficients"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggcorrplot)
+```
+
+```{r, echo=FALSE}
+#data2 <- read_csv("parsed2.csv")
+#data2 <- subset(data2, select=c(bail_amount, bail_paid, felonies, misdemeanors, summaries))
+#write_csv(data2, "parsed3.csv")
+col_types = cols(
+   bail_amount = col_double(),
+   bail_paid = col_double(),
+   felonies = col_double(),
+   misdemeanors = col_double(),
+   summaries = col_double()
+)
+data3 <- read_csv("parsed3.csv", col_types=col_types)
+corr <- cor(data3)
+ggcorrplot(corr, lab=TRUE)
+
+```
