@@ -11,6 +11,7 @@ all <- read.csv("../parsed1.csv")
 ```
 
 ```{r}
+
 #This is a histogram for the distribution of Offense Date from 2015-Now
 library(tidyverse)
 my_data <- as_tibble(all)
@@ -44,9 +45,10 @@ plot(time_of_day, bail_amount,
 ```
 
 ```{r}
+#This function tries to correctly parse the date of birth from the date of birth column and changes it to years
 foo <- function(x, year=1968){
-  m <- year(x) %% 100
-  year(x) <- ifelse(m > year %% 100, 1900+m, 2000+m)
+  k <- year(x) %% 100
+  year(x) <- ifelse(k > year %% 100, 1900+m, 2000+m)
   x
 }
 x <- foo(as.Date(all$dob, format = "%m/%d/%y"), 1920)
