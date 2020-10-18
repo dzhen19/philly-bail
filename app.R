@@ -32,11 +32,7 @@ ui <- navbarPage("Philly Bail Stats",
           tabPanel("Map",
                    # Sidebar panel for inputs ----
             sidebarPanel(
-              checkboxGroupInput("dist", "Crime type:",
-                      c("Normal" = "norm",
-                          "Uniform" = "unif",
-                          "Log-normal" = "lnorm",
-                          "Exponential" = "exp"))
+              p("Each blue dot represents the place a person arrested in Philadelphia was from.")
                    ),
             mainPanel("Map", map())
           ),
@@ -70,17 +66,15 @@ ui <- navbarPage("Philly Bail Stats",
                  )
             ),
           ),
-          tabPanel("Table",
+          tabPanel("Correlation",
             # Sidebar panel for inputs ----
             sidebarPanel(
-              checkboxGroupInput("dist", "Crime type:",
-                    c("Normal" = "norm",
-                      "Uniform" = "unif",
-                      "Log-normal" = "lnorm",
-                      "Exponential" = "exp"))
-              ),
+              p("A deeper shade of red represents a higher correlation coefficient in this heat map.")
+            ),
             mainPanel("Correlation Coeffieients", 
-                      includeHTML("do.html")
+                      plotOutput("corr")#output$corr
+                      #includeHTML(rmarkdown::render("do.Rmd"))
+                      #includeHTML("do.html")
                       #img(src="corr.png", width=500, height=500), 
                       #HTML('<img src="/heatmap.png" width="500" height="500">')
             )
@@ -95,7 +89,6 @@ server <- function(input, output) {
   y <- dnorm(x, mean=10, sd=3)
   #p <- plot(x, y)#, type="l", lwd=1)
   data <- read_csv("parsed1.csv")
-  table <- as.data.table(read_csv("parsed1.csv"))
   #seemingly no way to make data table in r shiny
   # output$normal <- renderPlot({
   #   plot(x, y)
@@ -148,12 +141,18 @@ server <- function(input, output) {
   # output$test <- renderText({
   #   nearPoints(my_data, input$plot_click, xvar = "dob", yvar = "bail_amount")
   # })
-  output$heatmap <- renderImage({
-    img("heatmap.png")
-  })
-  output$table <- renderDataTable({
-    table
-  })
+  col_types <- cols(
+    bail_amount = col_double(),
+    bail_paid = col_double(),
+    felonies = col_double(),
+    misdemeanors = col_double(),
+    summaries = col_double()
+  )
+  data3 <- read_csv("parsed3.csv", col_types=col_types)
+  corr <- cor(data3)
+  output$corr <- renderCachedPlot({
+    ggcorrplot(corr, lab=TRUE)
+  }, cacheKeyExpr = { input$n })
   #plotOutput("normal")
 }
 
